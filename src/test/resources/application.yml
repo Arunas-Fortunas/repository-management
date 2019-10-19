@@ -1,0 +1,11 @@
+repository:
+  baseUrl: https://api.github.com
+
+service:
+  language: Java
+  items: 2
+  popularityMetric: stars
+
+user:
+  login: plhomework555@gmail.com
+  password: expsoon-555
