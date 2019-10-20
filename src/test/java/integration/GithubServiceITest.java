@@ -14,13 +14,13 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = Application.class)
-class GithubServiceImplITest {
+class GithubServiceITest {
     private GithubService githubService;
     private UserProperties userProperties;
     private ServiceProperties serviceProperties;
 
     @Autowired
-    GithubServiceImplITest(GithubService githubService, UserProperties userProperties, ServiceProperties serviceProperties) {
+    GithubServiceITest(GithubService githubService, UserProperties userProperties, ServiceProperties serviceProperties) {
         this.githubService = githubService;
         this.userProperties = userProperties;
         this.serviceProperties = serviceProperties;
