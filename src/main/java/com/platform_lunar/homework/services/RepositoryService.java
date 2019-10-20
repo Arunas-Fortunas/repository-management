@@ -5,8 +5,6 @@ import com.platform_lunar.homework.controllers.exceptions.DataRetrievalException
 import com.platform_lunar.homework.domain.Repository;
 import com.platform_lunar.homework.domain.SortMetric;
 import com.platform_lunar.homework.domain.SortOrder;
-import com.platform_lunar.homework.services.GithubService;
-import com.platform_lunar.homework.services.RepositoryService;
 import io.vavr.control.Try;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -20,17 +18,17 @@ import static org.springframework.util.StringUtils.hasText;
 
 @Component
 public class RepositoryService {
-    private final GithubService githubService;
+    private final GithubGateway githubGateway;
     private final ServiceProperties serviceProperties;
 
     @Autowired
-    public RepositoryService(GithubService githubService, ServiceProperties serviceProperties) {
-        this.githubService = githubService;
+    public RepositoryService(GithubGateway githubGateway, ServiceProperties serviceProperties) {
+        this.githubGateway = githubGateway;
         this.serviceProperties = serviceProperties;
     }
 
     public List<Repository> findBy(String login, String authorization, SortMetric sortMetric, SortOrder sortOrder) {
-        var popularRepos = githubService.findPopularRepositories(
+        var popularRepos = githubGateway.findPopularRepositories(
                 serviceProperties.getLanguage(),
                 serviceProperties.getItems(),
                 serviceProperties.getPopularityMetric());
@@ -42,10 +40,10 @@ public class RepositoryService {
 
         for (var popularRepo : popularRepos) {
             executorService.execute(() -> {
-                int contributors = githubService.getContributorsCount(popularRepo.getContributorsUrl());
+                int contributors = githubGateway.getContributorsCount(popularRepo.getContributorsUrl());
 
                 Boolean starredByUser = hasText(login) && hasText(authorization)
-                        ? githubService.isStarredByUser(login, authorization, popularRepo.getOwnerLogin(), popularRepo.getName())
+                        ? githubGateway.isStarredByUser(login, authorization, popularRepo.getOwnerLogin(), popularRepo.getName())
                             : null;
 
                 result.add(new Repository(
@@ -72,10 +70,10 @@ public class RepositoryService {
     }
 
     public void starRepo(String login, String authorization, String repoOwner, String repoName) {
-        githubService.starRepo(login, authorization, repoOwner, repoName);
+        githubGateway.starRepo(login, authorization, repoOwner, repoName);
     }
 
     public void unstarRepo(String login, String authorization, String repoOwner, String repoName) {
-        githubService.unstarRepo(login, authorization, repoOwner, repoName);
+        githubGateway.unstarRepo(login, authorization, repoOwner, repoName);
     }
 }

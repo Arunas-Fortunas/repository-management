@@ -3,7 +3,7 @@ package integration;
 import com.platform_lunar.homework.Application;
 import com.platform_lunar.homework.configurations.properties.ServiceProperties;
 import com.platform_lunar.homework.configurations.properties.UserProperties;
-import com.platform_lunar.homework.services.GithubService;
+import com.platform_lunar.homework.services.GithubGateway;
 import com.platform_lunar.homework.utils.AuthorizationUtils;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
@@ -14,17 +14,15 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = Application.class)
-class GithubServiceITest {
-    private GithubService githubService;
-    private UserProperties userProperties;
+class GithubGatewayITest {
+    private GithubGateway githubGateway;
     private ServiceProperties serviceProperties;
     private String login;
     private String authorization;
 
     @Autowired
-    GithubServiceITest(GithubService githubService, UserProperties userProperties, ServiceProperties serviceProperties) {
-        this.githubService = githubService;
-        this.userProperties = userProperties;
+    GithubGatewayITest(GithubGateway githubGateway, UserProperties userProperties, ServiceProperties serviceProperties) {
+        this.githubGateway = githubGateway;
         this.serviceProperties = serviceProperties;
         this.login = userProperties.getLogin();
         this.authorization = AuthorizationUtils.createEncodedAuthorization(login, userProperties.getPassword());
@@ -32,7 +30,7 @@ class GithubServiceITest {
 
     @Test
     void findPopularRepositories() {
-        var popularRepos = this.githubService.findPopularRepositories(
+        var popularRepos = this.githubGateway.findPopularRepositories(
                 serviceProperties.getLanguage(),
                 serviceProperties.getItems(),
                 serviceProperties.getPopularityMetric());
@@ -46,7 +44,7 @@ class GithubServiceITest {
     @Test
     void getContributorsCount() {
         var contributorsUrl = "https://api.github.com/repos/iluwatar/java-design-patterns/contributors";
-        var contributors = this.githubService.getContributorsCount(contributorsUrl);
+        var contributors = this.githubGateway.getContributorsCount(contributorsUrl);
 
         Assert.assertTrue(contributors > 200); // I assume contributors count cannot get less than it is now
     }
@@ -56,23 +54,23 @@ class GithubServiceITest {
 
     @Test
     void whenStarCompleted_ThenStarredByUser() {
-        githubService.unstarRepo(login, authorization, REPO_OWNER, REPO_NAME);
+        githubGateway.unstarRepo(login, authorization, REPO_OWNER, REPO_NAME);
         Assert.assertFalse(isStarred());
 
-        githubService.starRepo(login, authorization, REPO_OWNER, REPO_NAME);
+        githubGateway.starRepo(login, authorization, REPO_OWNER, REPO_NAME);
         Assert.assertTrue(isStarred());
     }
 
     @Test
     void whenUnstarCompleted_ThenNotStarredByUser() {
-        githubService.starRepo(login, authorization, REPO_OWNER, REPO_NAME);
+        githubGateway.starRepo(login, authorization, REPO_OWNER, REPO_NAME);
         Assert.assertTrue(isStarred());
 
-        githubService.unstarRepo(login, authorization, REPO_OWNER, REPO_NAME);
+        githubGateway.unstarRepo(login, authorization, REPO_OWNER, REPO_NAME);
         Assert.assertFalse(isStarred());
     }
 
     private boolean isStarred() {
-        return githubService.isStarredByUser(login, authorization, REPO_OWNER, REPO_NAME);
+        return githubGateway.isStarredByUser(login, authorization, REPO_OWNER, REPO_NAME);
     }
 }

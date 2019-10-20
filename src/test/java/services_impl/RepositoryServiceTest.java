@@ -3,7 +3,7 @@ package services_impl;
 import com.platform_lunar.homework.configurations.properties.ServiceProperties;
 import com.platform_lunar.homework.domain.SortMetric;
 import com.platform_lunar.homework.dtos.PopularRepositoryDto;
-import com.platform_lunar.homework.services.GithubService;
+import com.platform_lunar.homework.services.GithubGateway;
 import com.platform_lunar.homework.services.RepositoryService;
 import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,7 +20,7 @@ import static com.platform_lunar.homework.domain.SortOrder.ASC;
 import static com.platform_lunar.homework.domain.SortOrder.DESC;
 
 public class RepositoryServiceTest {
-    private GithubService githubService = Mockito.mock(GithubService.class);
+    private GithubGateway githubGateway = Mockito.mock(GithubGateway.class);
     private ServiceProperties serviceProperties = new ServiceProperties();
     private List<PopularRepositoryDto> popularRepos = createPopularRepositories(serviceProperties.getLanguage());
 
@@ -31,18 +31,18 @@ public class RepositoryServiceTest {
         serviceProperties.setPopularityMetric(STARS);
 
         Mockito.when(
-                githubService.findPopularRepositories(
+                githubGateway.findPopularRepositories(
                         serviceProperties.getLanguage(),
                         serviceProperties.getItems(),
                         serviceProperties.getPopularityMetric()))
                 .thenReturn(popularRepos);
 
         IntStream.rangeClosed(0, 9).forEach(
-                i -> Mockito.when(githubService.getContributorsCount("contributors_url" + i))
+                i -> Mockito.when(githubGateway.getContributorsCount("contributors_url" + i))
                         .thenReturn(i));
 
         IntStream.rangeClosed(0, 9).forEach(
-                i -> Mockito.when(githubService.isStarredByUser(
+                i -> Mockito.when(githubGateway.isStarredByUser(
                         "login",
                         "authorization",
                         "owner" + i,
@@ -52,7 +52,7 @@ public class RepositoryServiceTest {
 
     @Test
     void findBy_ContributorsDesc() {
-        var repositoryService = new RepositoryService(githubService, serviceProperties);
+        var repositoryService = new RepositoryService(githubGateway, serviceProperties);
         var repositories = repositoryService.findBy("login", "authorization", CONTRIBUTORS, DESC);
 
         IntStream.rangeClosed(0, 8).forEach(i -> {
@@ -64,7 +64,7 @@ public class RepositoryServiceTest {
 
     @Test
     void findBy_StarsAsc() {
-        var repositoryService = new RepositoryService(githubService, serviceProperties);
+        var repositoryService = new RepositoryService(githubGateway, serviceProperties);
         var repositories = repositoryService.findBy("login", "authorization", SortMetric.STARS, ASC);
 
         IntStream.rangeClosed(0, 8).forEach(i -> {

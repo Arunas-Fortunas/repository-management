@@ -28,13 +28,13 @@ import static com.platform_lunar.homework.utils.RestUtils.*;
 import static org.springframework.http.HttpMethod.*;
 
 @Component
-public class GithubService {
+public class GithubGateway {
     private final RepositoryProperties repoProperties;
     private final RestTemplate restTemplate;
 
-    private static final Logger log = LoggerFactory.getLogger(GithubService.class);
+    private static final Logger log = LoggerFactory.getLogger(GithubGateway.class);
 
-    public GithubService(RepositoryProperties repoProperties, RestTemplate restTemplate) {
+    public GithubGateway(RepositoryProperties repoProperties, RestTemplate restTemplate) {
         this.repoProperties = repoProperties;
         this.restTemplate = restTemplate;
     }

@@ -5,7 +5,7 @@ import com.platform_lunar.homework.configurations.properties.ServiceProperties;
 import com.platform_lunar.homework.configurations.properties.UserProperties;
 import com.platform_lunar.homework.domain.SortMetric;
 import com.platform_lunar.homework.domain.SortOrder;
-import com.platform_lunar.homework.services.GithubService;
+import com.platform_lunar.homework.services.GithubGateway;
 import com.platform_lunar.homework.utils.AuthorizationUtils;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
@@ -27,15 +27,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 public class RepositoryControllerITest {
     private MockMvc mvc;
-    private GithubService githubService;
+    private GithubGateway githubGateway;
     private UserProperties userProperties;
     private ServiceProperties serviceProperties;
 
     @Autowired
-    public RepositoryControllerITest(MockMvc mvc, GithubService githubService, UserProperties userProperties,
+    public RepositoryControllerITest(MockMvc mvc, GithubGateway githubGateway, UserProperties userProperties,
                                      ServiceProperties serviceProperties) {
         this.mvc = mvc;
-        this.githubService = githubService;
+        this.githubGateway = githubGateway;
         this.userProperties = userProperties;
         this.serviceProperties = serviceProperties;
     }
@@ -52,7 +52,7 @@ public class RepositoryControllerITest {
                 .andExpect(status().isOk());
 
         Assert.assertFalse(
-                githubService.isStarredByUser(userProperties.getLogin(), getAuthorization(), REPO_OWNER, REPO_NAME));
+                githubGateway.isStarredByUser(userProperties.getLogin(), getAuthorization(), REPO_OWNER, REPO_NAME));
     }
 
     @Test
@@ -63,7 +63,7 @@ public class RepositoryControllerITest {
                 .andExpect(status().isOk());
 
         Assert.assertTrue(
-                githubService.isStarredByUser(userProperties.getLogin(), getAuthorization(), REPO_OWNER, REPO_NAME));
+                githubGateway.isStarredByUser(userProperties.getLogin(), getAuthorization(), REPO_OWNER, REPO_NAME));
     }
 
     @Test
