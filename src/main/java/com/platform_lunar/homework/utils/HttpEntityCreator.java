@@ -4,7 +4,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.util.StringUtils;
 
-public class RestUtils {
+public class HttpEntityCreator {
     public static final String QUERY = "q";
     public static final String PAGE = "page";
     public static final String PER_PAGE = "per_page";
@@ -15,7 +15,7 @@ public class RestUtils {
     public static final String REPO_OWNER = "owner";
     public static final String REPO_NAME = "name";
 
-    public static HttpEntity createHttpEntity(String login, String authorization) {
+    public static HttpEntity create(String login, String authorization) {
         return new HttpEntity(
                 new HttpHeaders() {{
                     if (StringUtils.hasText(login)) {
@@ -31,7 +31,7 @@ public class RestUtils {
         );
     }
 
-    public static HttpEntity createHttpEntity() {
-        return createHttpEntity(null, null);
+    public static HttpEntity create() {
+        return create(null, null);
     }
 }

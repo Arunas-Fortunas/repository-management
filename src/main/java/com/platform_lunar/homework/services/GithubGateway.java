@@ -6,7 +6,7 @@ import com.platform_lunar.homework.configurations.properties.RepositoryPropertie
 import com.platform_lunar.homework.controllers.exceptions.DataRetrievalException;
 import com.platform_lunar.homework.domain.PopularityMetric;
 import com.platform_lunar.homework.dtos.PopularRepositoryDto;
-import com.platform_lunar.homework.utils.RestUtils;
+import com.platform_lunar.homework.utils.HttpEntityCreator;
 import com.platform_lunar.homework.utils.GithubPageCountResolver;
 import io.vavr.control.Try;
 import lombok.Data;
@@ -24,7 +24,7 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
-import static com.platform_lunar.homework.utils.RestUtils.*;
+import static com.platform_lunar.homework.utils.HttpEntityCreator.*;
 import static org.springframework.http.HttpMethod.*;
 
 @Component
@@ -50,7 +50,7 @@ public class GithubGateway {
                 .queryParam(ORDER, "desc");
 
         var res = restTemplate.exchange(builder.buildAndExpand(Map.of()).toUri(),
-                GET, RestUtils.createHttpEntity(), RepositoryInfoDto.class);
+                GET, HttpEntityCreator.create(), RepositoryInfoDto.class);
 
         final var repositoryData = res.getBody();
         if (!res.getStatusCode().is2xxSuccessful() || repositoryData == null)
@@ -87,7 +87,7 @@ public class GithubGateway {
                 .queryParam(ANONYMOUS, true);
 
         var res = restTemplate.exchange(builder.buildAndExpand(Map.of()).toUri(),
-                HEAD, RestUtils.createHttpEntity(), Object.class);
+                HEAD, HttpEntityCreator.create(), Object.class);
 
         if (!res.getStatusCode().is2xxSuccessful())
             throw new DataRetrievalException(String.format("could not retrieve contributors count with url: %s", url));
@@ -115,7 +115,7 @@ public class GithubGateway {
         var urlParams = Map.of(REPO_OWNER, repoOwner, REPO_NAME, repoName);
 
         return Try.of(() -> restTemplate.exchange(builder.buildAndExpand(urlParams).toUri(), GET,
-                RestUtils.createHttpEntity(login, authorization), Object.class))
+                HttpEntityCreator.create(login, authorization), Object.class))
                 .map(res -> res.getStatusCode().is2xxSuccessful())
                 .onFailure(ex -> {
                     if (ex instanceof HttpClientErrorException) {
@@ -148,7 +148,7 @@ public class GithubGateway {
         var urlParams = Map.of(REPO_OWNER, repoOwner, REPO_NAME, repoName);
 
         restTemplate.exchange(builder.buildAndExpand(urlParams).toUri(),
-                httpMethod, RestUtils.createHttpEntity(login, authorization), Object.class);
+                httpMethod, HttpEntityCreator.create(login, authorization), Object.class);
     }
 
     @Data
