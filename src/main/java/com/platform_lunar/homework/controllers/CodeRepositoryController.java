@@ -3,7 +3,7 @@ package com.platform_lunar.homework.controllers;
 import com.platform_lunar.homework.domain.CodeRepository;
 import com.platform_lunar.homework.domain.SortMetric;
 import com.platform_lunar.homework.domain.SortOrder;
-import com.platform_lunar.homework.services.RepositoryService;
+import com.platform_lunar.homework.services.CodeRepositoryService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +20,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @Validated
 @RestController
 @RequestMapping(path = "/repository-management", produces = APPLICATION_JSON_VALUE)
-public class RepositoryController {
+public class CodeRepositoryController {
     public static final String LOGIN = "login";
     public static final String AUTHORIZATION = "authorization";
     public static final String SORT_METRIC = "sort_metric";
@@ -29,13 +29,13 @@ public class RepositoryController {
     private static final String OWNER = "owner";
     private static final String REPO = "repo";
 
-    private static final Logger log = LoggerFactory.getLogger(RepositoryController.class);
+    private static final Logger log = LoggerFactory.getLogger(CodeRepositoryController.class);
 
-    private RepositoryService repositoryService;
+    private CodeRepositoryService codeRepositoryService;
 
     @Autowired
-    public RepositoryController(RepositoryService repositoryService) {
-        this.repositoryService = repositoryService;
+    public CodeRepositoryController(CodeRepositoryService codeRepositoryService) {
+        this.codeRepositoryService = codeRepositoryService;
     }
 
     @GetMapping(path = "popular-repositories")
@@ -47,7 +47,7 @@ public class RepositoryController {
             @RequestParam(value = SORT_ORDER) @NotNull SortOrder sortOrder) {
 
         log.info("GET popular frameworks; sort metric [{}] and sort order [{}]", sortMetric, sortOrder);
-        return repositoryService.findBy(login, authorization, sortMetric, sortOrder);
+        return codeRepositoryService.findBy(login, authorization, sortMetric, sortOrder);
     }
 
     @PutMapping(path = "{owner}/{repo}/star")
@@ -59,7 +59,7 @@ public class RepositoryController {
             @PathVariable(REPO) @NotEmpty String repoName) {
 
         log.info("star {}:{} repo for user [{}]", repoOwner, repoName, login);
-        repositoryService.starRepo(login, authorization, repoOwner, repoName);
+        codeRepositoryService.starRepo(login, authorization, repoOwner, repoName);
     }
 
     @DeleteMapping(path = "{owner}/{repo}/unstar")
@@ -71,6 +71,6 @@ public class RepositoryController {
             @PathVariable(REPO) @NotEmpty String repoName) {
 
         log.info("unstar {}:{} repo for user [{}]", repoOwner, repoName, login);
-        repositoryService.unstarRepo(login, authorization, repoOwner, repoName);
+        codeRepositoryService.unstarRepo(login, authorization, repoOwner, repoName);
     }
 }

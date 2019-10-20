@@ -17,12 +17,12 @@ import java.util.concurrent.*;
 import static org.springframework.util.StringUtils.hasText;
 
 @Component
-public class RepositoryService {
+public class CodeRepositoryService {
     private final GithubGateway githubGateway;
     private final ServiceProperties serviceProperties;
 
     @Autowired
-    public RepositoryService(GithubGateway githubGateway, ServiceProperties serviceProperties) {
+    public CodeRepositoryService(GithubGateway githubGateway, ServiceProperties serviceProperties) {
         this.githubGateway = githubGateway;
         this.serviceProperties = serviceProperties;
     }
