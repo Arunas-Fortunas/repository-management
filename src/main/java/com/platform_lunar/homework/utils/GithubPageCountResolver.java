@@ -2,7 +2,7 @@ package com.platform_lunar.homework.utils;
 
 import java.util.regex.Pattern;
 
-public class StringUtils {
+public class GithubPageCountResolver {
     private static final Pattern PAGE_COUNT_PATTERN = Pattern.compile(".+page=(\\d+)>; rel=\"last\"");
 
     public static Integer extractPageCount(String link) {

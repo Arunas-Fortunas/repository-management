@@ -7,7 +7,7 @@ import com.platform_lunar.homework.controllers.exceptions.DataRetrievalException
 import com.platform_lunar.homework.domain.PopularityMetric;
 import com.platform_lunar.homework.dtos.PopularRepositoryDto;
 import com.platform_lunar.homework.utils.RestUtils;
-import com.platform_lunar.homework.utils.StringUtils;
+import com.platform_lunar.homework.utils.GithubPageCountResolver;
 import io.vavr.control.Try;
 import lombok.Data;
 import org.slf4j.Logger;
@@ -94,7 +94,7 @@ public class GithubGateway {
 
         var link = res.getHeaders().getFirst(LINK);
 
-        return StringUtils.extractPageCount(link);
+        return GithubPageCountResolver.extractPageCount(link);
     }
 
     private Cache<String, Boolean> starredCache = Caffeine.newBuilder()
