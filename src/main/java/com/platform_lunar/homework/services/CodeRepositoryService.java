@@ -21,7 +21,6 @@ public class CodeRepositoryService {
     private final GithubGateway githubGateway;
     private final ServiceProperties serviceProperties;
 
-    @Autowired
     public CodeRepositoryService(GithubGateway githubGateway, ServiceProperties serviceProperties) {
         this.githubGateway = githubGateway;
         this.serviceProperties = serviceProperties;
