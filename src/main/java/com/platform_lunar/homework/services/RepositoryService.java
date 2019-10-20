@@ -33,7 +33,7 @@ public class RepositoryService {
                 serviceProperties.getItems(),
                 serviceProperties.getPopularityMetric());
 
-        var result = Collections.synchronizedList(new ArrayList<CodeRepository>(serviceProperties.getItems()));
+        var synchronizedCodeRepoList = Collections.synchronizedList(new ArrayList<CodeRepository>(serviceProperties.getItems()));
         var latch = new CountDownLatch(serviceProperties.getItems());
 
         var executorService = Executors.newFixedThreadPool(serviceProperties.getItems());
@@ -46,7 +46,7 @@ public class RepositoryService {
                         ? githubGateway.isStarredByUser(login, authorization, popularRepo.getOwnerLogin(), popularRepo.getName())
                             : null;
 
-                result.add(new CodeRepository(
+                synchronizedCodeRepoList.add(new CodeRepository(
                         popularRepo.getName(),
                         popularRepo.getDescription(),
                         popularRepo.getLicenceName(),
@@ -65,8 +65,8 @@ public class RepositoryService {
             executorService.awaitTermination(1, TimeUnit.SECONDS);
         }).getOrElseThrow(() -> new DataRetrievalException("could not find repositories"));
 
-        result.sort(sortOrder == SortOrder.ASC ? sortMetric : sortMetric.reversed());
-        return result;
+        synchronizedCodeRepoList.sort(sortOrder == SortOrder.ASC ? sortMetric : sortMetric.reversed());
+        return synchronizedCodeRepoList;
     }
 
     public void starRepo(String login, String authorization, String repoOwner, String repoName) {
