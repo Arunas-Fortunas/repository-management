@@ -70,9 +70,7 @@ public class CodeRepositoryControllerITest {
     void findPopularRepositories_WithAuthorization() throws Exception {
         mvc.perform(get("/repository-management/popular-repositories")
                 .header(LOGIN, userProperties.getLogin())
-                .header(AUTHORIZATION, getAuthorization())
-                .param(SORT_METRIC, SortMetric.STARS.getName())
-                .param(SORT_ORDER, SortOrder.DESC.getName()))
+                .header(AUTHORIZATION, getAuthorization()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isArray())
                 .andExpect(jsonPath("$", hasSize(serviceProperties.getItems())))
@@ -86,9 +84,7 @@ public class CodeRepositoryControllerITest {
 
     @Test
     void findPopularRepositories_WithoutAuthorization() throws Exception {
-        mvc.perform(get("/repository-management/popular-repositories")
-                .param(SORT_METRIC, SortMetric.STARS.getName())
-                .param(SORT_ORDER, SortOrder.DESC.getName()))
+        mvc.perform(get("/repository-management/popular-repositories"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isArray())
                 .andExpect(jsonPath("$", hasSize(serviceProperties.getItems())))
@@ -102,9 +98,6 @@ public class CodeRepositoryControllerITest {
 
     @Test
     void badRequestStatus() throws Exception {
-        mvc.perform(get("/repository-management/popular-repositories"))
-                .andExpect(status().is4xxClientError());
-
         mvc.perform(put("/repository-management/{owner}/{repo}/star", REPO_OWNER, REPO_NAME))
                 .andExpect(status().is4xxClientError());
 

@@ -14,6 +14,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
+import static com.platform_lunar.homework.domain.SortMetric.STARS;
 import static org.springframework.http.HttpStatus.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
@@ -42,8 +43,8 @@ public class CodeRepositoryController {
     public List<CodeRepository> findPopularRepositories(
             @RequestHeader(value = LOGIN, required = false) String login,
             @RequestHeader(value = AUTHORIZATION, required = false) String authorization,
-            @RequestParam(value = SORT_METRIC) @NotNull SortMetric sortMetric,
-            @RequestParam(value = SORT_ORDER) @NotNull SortOrder sortOrder) {
+            @RequestParam(value = SORT_METRIC, defaultValue = "stars") @NotNull SortMetric sortMetric,
+            @RequestParam(value = SORT_ORDER, defaultValue = "desc") @NotNull SortOrder sortOrder) {
 
         log.info("GET popular frameworks; sort metric [{}] and sort order [{}]", sortMetric, sortOrder);
         return codeRepositoryService.findBy(login, authorization, sortMetric, sortOrder);
