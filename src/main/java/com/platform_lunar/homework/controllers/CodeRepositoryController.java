@@ -39,7 +39,6 @@ public class CodeRepositoryController {
     }
 
     @GetMapping(path = "popular-repositories")
-    @ResponseStatus(value = OK)
     public List<CodeRepository> findPopularRepositories(
             @RequestHeader(value = LOGIN, required = false) String login,
             @RequestHeader(value = AUTHORIZATION, required = false) String authorization,
@@ -51,7 +50,6 @@ public class CodeRepositoryController {
     }
 
     @PutMapping(path = "{owner}/{repo}/star")
-    @ResponseStatus(value = OK)
     public void starRepo(
             @RequestHeader(LOGIN) @NotEmpty String login,
             @RequestHeader(AUTHORIZATION) @NotEmpty String authorization,
@@ -63,7 +61,6 @@ public class CodeRepositoryController {
     }
 
     @DeleteMapping(path = "{owner}/{repo}/unstar")
-    @ResponseStatus(value = OK)
     public void unstarRepo(
             @RequestHeader(LOGIN) @NotEmpty String login,
             @RequestHeader(AUTHORIZATION) @NotEmpty String authorization,
