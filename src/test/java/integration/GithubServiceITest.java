@@ -18,12 +18,16 @@ class GithubServiceITest {
     private GithubService githubService;
     private UserProperties userProperties;
     private ServiceProperties serviceProperties;
+    private String login;
+    private String authorization;
 
     @Autowired
     GithubServiceITest(GithubService githubService, UserProperties userProperties, ServiceProperties serviceProperties) {
         this.githubService = githubService;
         this.userProperties = userProperties;
         this.serviceProperties = serviceProperties;
+        this.login = userProperties.getLogin();
+        this.authorization = AuthorizationUtils.createEncodedAuthorization(login, userProperties.getPassword());
     }
 
     @Test
@@ -52,21 +56,23 @@ class GithubServiceITest {
 
     @Test
     void whenStarCompleted_ThenStarredByUser() {
-        var login = userProperties.getLogin();
-        var authorization = AuthorizationUtils.createEncodedAuthorization(login, userProperties.getPassword());
+        githubService.unstarRepo(login, authorization, REPO_OWNER, REPO_NAME);
+        Assert.assertFalse(isStarred());
 
         githubService.starRepo(login, authorization, REPO_OWNER, REPO_NAME);
-
-        Assert.assertTrue(githubService.isStarredByUser(login, authorization, REPO_OWNER, REPO_NAME));
+        Assert.assertTrue(isStarred());
     }
 
     @Test
     void whenUnstarCompleted_ThenNotStarredByUser() {
-        var login = userProperties.getLogin();
-        var authorization = AuthorizationUtils.createEncodedAuthorization(login, userProperties.getPassword());
+        githubService.starRepo(login, authorization, REPO_OWNER, REPO_NAME);
+        Assert.assertTrue(isStarred());
 
         githubService.unstarRepo(login, authorization, REPO_OWNER, REPO_NAME);
+        Assert.assertFalse(isStarred());
+    }
 
-        Assert.assertFalse(githubService.isStarredByUser(login, authorization, REPO_OWNER, REPO_NAME));
+    private boolean isStarred() {
+        return githubService.isStarredByUser(login, authorization, REPO_OWNER, REPO_NAME);
     }
 }
