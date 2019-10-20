@@ -4,7 +4,7 @@ import com.platform_lunar.homework.configurations.properties.ServiceProperties;
 import com.platform_lunar.homework.domain.SortMetric;
 import com.platform_lunar.homework.dtos.PopularRepositoryDto;
 import com.platform_lunar.homework.services.GithubService;
-import com.platform_lunar.homework.services_impl.RepositoryServiceImpl;
+import com.platform_lunar.homework.services.RepositoryService;
 import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -52,7 +52,7 @@ public class RepositoryServiceImplTest {
 
     @Test
     void findBy_ContributorsDesc() {
-        var repositoryService = new RepositoryServiceImpl(githubService, serviceProperties);
+        var repositoryService = new RepositoryService(githubService, serviceProperties);
         var repositories = repositoryService.findBy("login", "authorization", CONTRIBUTORS, DESC);
 
         IntStream.rangeClosed(0, 8).forEach(i -> {
@@ -64,7 +64,7 @@ public class RepositoryServiceImplTest {
 
     @Test
     void findBy_StarsAsc() {
-        var repositoryService = new RepositoryServiceImpl(githubService, serviceProperties);
+        var repositoryService = new RepositoryService(githubService, serviceProperties);
         var repositories = repositoryService.findBy("login", "authorization", SortMetric.STARS, ASC);
 
         IntStream.rangeClosed(0, 8).forEach(i -> {
