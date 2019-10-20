@@ -6,8 +6,8 @@ import com.platform_lunar.homework.configurations.properties.RepositoryPropertie
 import com.platform_lunar.homework.controllers.exceptions.DataRetrievalException;
 import com.platform_lunar.homework.domain.PopularityMetric;
 import com.platform_lunar.homework.dtos.PopularRepositoryDto;
-import com.platform_lunar.homework.utils.HttpEntityCreator;
 import com.platform_lunar.homework.utils.GithubPageCountResolver;
+import com.platform_lunar.homework.utils.HttpEntityCreator;
 import io.vavr.control.Try;
 import lombok.Data;
 import org.slf4j.Logger;
@@ -22,9 +22,9 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
 
 import static com.platform_lunar.homework.utils.HttpEntityCreator.*;
+import static java.util.stream.Collectors.toList;
 import static org.springframework.http.HttpMethod.*;
 
 @Component
@@ -66,7 +66,7 @@ public class GithubGateway {
                         item.getUrl(),
                         item.getStargazers_count(),
                         item.getContributors_url()))
-                .collect(Collectors.toList());
+                .collect(toList());
     }
 
     private static final int CACHE_SIZE = 1000;
