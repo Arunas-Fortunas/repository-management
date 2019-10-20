@@ -19,7 +19,7 @@ import static com.platform_lunar.homework.domain.SortMetric.CONTRIBUTORS;
 import static com.platform_lunar.homework.domain.SortOrder.ASC;
 import static com.platform_lunar.homework.domain.SortOrder.DESC;
 
-public class RepositoryServiceTest {
+public class CodeRepositoryServiceTest {
     private GithubGateway githubGateway = Mockito.mock(GithubGateway.class);
     private ServiceProperties serviceProperties = new ServiceProperties();
     private List<PopularRepositoryDto> popularRepos = createPopularRepositories(serviceProperties.getLanguage());

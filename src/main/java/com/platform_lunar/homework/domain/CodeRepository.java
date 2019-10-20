@@ -3,7 +3,7 @@ package com.platform_lunar.homework.domain;
 import lombok.*;
 
 @Data
-public class Repository {
+public class CodeRepository {
     private final String name;
     private final String description;
     private final String licenceName;

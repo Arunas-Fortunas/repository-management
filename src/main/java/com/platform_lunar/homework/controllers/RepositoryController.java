@@ -1,6 +1,6 @@
 package com.platform_lunar.homework.controllers;
 
-import com.platform_lunar.homework.domain.Repository;
+import com.platform_lunar.homework.domain.CodeRepository;
 import com.platform_lunar.homework.domain.SortMetric;
 import com.platform_lunar.homework.domain.SortOrder;
 import com.platform_lunar.homework.services.RepositoryService;
@@ -40,7 +40,7 @@ public class RepositoryController {
 
     @GetMapping(path = "popular-repositories")
     @ResponseStatus(value = OK)
-    public List<Repository> findPopularRepositories(
+    public List<CodeRepository> findPopularRepositories(
             @RequestHeader(value = LOGIN, required = false) String login,
             @RequestHeader(value = AUTHORIZATION, required = false) String authorization,
             @RequestParam(value = SORT_METRIC) @NotNull SortMetric sortMetric,

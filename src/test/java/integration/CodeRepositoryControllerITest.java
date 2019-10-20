@@ -25,15 +25,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = Application.class)
 @AutoConfigureMockMvc
-public class RepositoryControllerITest {
+public class CodeRepositoryControllerITest {
     private MockMvc mvc;
     private GithubGateway githubGateway;
     private UserProperties userProperties;
     private ServiceProperties serviceProperties;
 
     @Autowired
-    public RepositoryControllerITest(MockMvc mvc, GithubGateway githubGateway, UserProperties userProperties,
-                                     ServiceProperties serviceProperties) {
+    public CodeRepositoryControllerITest(MockMvc mvc, GithubGateway githubGateway, UserProperties userProperties,
+                                         ServiceProperties serviceProperties) {
         this.mvc = mvc;
         this.githubGateway = githubGateway;
         this.userProperties = userProperties;

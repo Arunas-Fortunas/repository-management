@@ -2,7 +2,7 @@ package com.platform_lunar.homework.services;
 
 import com.platform_lunar.homework.configurations.properties.ServiceProperties;
 import com.platform_lunar.homework.controllers.exceptions.DataRetrievalException;
-import com.platform_lunar.homework.domain.Repository;
+import com.platform_lunar.homework.domain.CodeRepository;
 import com.platform_lunar.homework.domain.SortMetric;
 import com.platform_lunar.homework.domain.SortOrder;
 import io.vavr.control.Try;
@@ -27,13 +27,13 @@ public class RepositoryService {
         this.serviceProperties = serviceProperties;
     }
 
-    public List<Repository> findBy(String login, String authorization, SortMetric sortMetric, SortOrder sortOrder) {
+    public List<CodeRepository> findBy(String login, String authorization, SortMetric sortMetric, SortOrder sortOrder) {
         var popularRepos = githubGateway.findPopularRepositories(
                 serviceProperties.getLanguage(),
                 serviceProperties.getItems(),
                 serviceProperties.getPopularityMetric());
 
-        var result = Collections.synchronizedList(new ArrayList<Repository>(serviceProperties.getItems()));
+        var result = Collections.synchronizedList(new ArrayList<CodeRepository>(serviceProperties.getItems()));
         var latch = new CountDownLatch(serviceProperties.getItems());
 
         var executorService = Executors.newFixedThreadPool(serviceProperties.getItems());
@@ -46,7 +46,7 @@ public class RepositoryService {
                         ? githubGateway.isStarredByUser(login, authorization, popularRepo.getOwnerLogin(), popularRepo.getName())
                             : null;
 
-                result.add(new Repository(
+                result.add(new CodeRepository(
                         popularRepo.getName(),
                         popularRepo.getDescription(),
                         popularRepo.getLicenceName(),
