@@ -1,4 +1,4 @@
-package services_impl;
+package services;
 
 import com.platform_lunar.homework.configurations.properties.ServiceProperties;
 import com.platform_lunar.homework.domain.SortMetric;
