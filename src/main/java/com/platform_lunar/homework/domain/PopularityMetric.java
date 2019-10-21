@@ -1,5 +1,8 @@
 package com.platform_lunar.homework.domain;
 
+import lombok.Getter;
+
+@Getter
 public enum PopularityMetric {
     STARS("stars");
 
@@ -7,10 +10,6 @@ public enum PopularityMetric {
 
     PopularityMetric(String name) {
         this.name = name;
-    }
-
-    public String getName() {
-        return name;
     }
 
     @Override

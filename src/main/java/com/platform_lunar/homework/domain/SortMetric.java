@@ -1,7 +1,10 @@
 package com.platform_lunar.homework.domain;
 
+import lombok.Getter;
+
 import java.util.Comparator;
 
+@Getter
 public enum SortMetric implements Comparator<CodeRepository> {
     CONTRIBUTORS("contributors") {
         @Override
@@ -23,10 +26,6 @@ public enum SortMetric implements Comparator<CodeRepository> {
     }
 
     public abstract int compare(CodeRepository repo1, CodeRepository repo2);
-
-    public String getName() {
-        return name;
-    }
 
     @Override
     public String toString() {

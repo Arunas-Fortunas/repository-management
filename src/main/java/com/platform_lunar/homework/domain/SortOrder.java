@@ -1,5 +1,8 @@
 package com.platform_lunar.homework.domain;
 
+import lombok.Getter;
+
+@Getter
 public enum SortOrder {
     ASC("asc"),
     DESC("desc");
@@ -8,10 +11,6 @@ public enum SortOrder {
 
     SortOrder(String name) {
         this.name = name;
-    }
-
-    public String getName() {
-        return name;
     }
 
     @Override
