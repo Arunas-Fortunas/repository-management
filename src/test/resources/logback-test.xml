@@ -9,4 +9,8 @@
         <appender-ref ref="console" />
     </root>
 
+    <logger name="com.platform_lunar.homework.services" level="debug" additivity="false">
+        <appender-ref ref="console" />
+    </logger>
+
 </configuration>
