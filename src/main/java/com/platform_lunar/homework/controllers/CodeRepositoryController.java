@@ -4,8 +4,7 @@ import com.platform_lunar.homework.domain.CodeRepository;
 import com.platform_lunar.homework.domain.SortMetric;
 import com.platform_lunar.homework.domain.SortOrder;
 import com.platform_lunar.homework.services.CodeRepositoryService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -14,10 +13,9 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
-import static com.platform_lunar.homework.domain.SortMetric.STARS;
-import static org.springframework.http.HttpStatus.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
+@Slf4j
 @Validated
 @RestController
 @RequestMapping(path = "/repository-management", produces = APPLICATION_JSON_VALUE)
@@ -29,8 +27,6 @@ public class CodeRepositoryController {
 
     private static final String OWNER = "owner";
     private static final String REPO = "repo";
-
-    private static final Logger log = LoggerFactory.getLogger(CodeRepositoryController.class);
 
     private CodeRepositoryService codeRepositoryService;
 

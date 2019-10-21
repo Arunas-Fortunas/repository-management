@@ -10,8 +10,7 @@ import com.platform_lunar.homework.utils.GithubPageCountResolver;
 import com.platform_lunar.homework.utils.HttpEntityCreator;
 import io.vavr.control.Try;
 import lombok.Data;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
@@ -27,12 +26,11 @@ import static com.platform_lunar.homework.utils.HttpEntityCreator.*;
 import static java.util.stream.Collectors.toList;
 import static org.springframework.http.HttpMethod.*;
 
+@Slf4j
 @Component
 public class GithubGateway {
     private final GithubProperties githubProperties;
     private final RestTemplate restTemplate;
-
-    private static final Logger log = LoggerFactory.getLogger(GithubGateway.class);
 
     public GithubGateway(GithubProperties githubProperties, RestTemplate restTemplate) {
         this.githubProperties = githubProperties;
