@@ -46,7 +46,7 @@ public class CodeRepositoryController {
             @RequestParam(value = SORT_METRIC, defaultValue = "stars") @NotNull SortMetric sortMetric,
             @RequestParam(value = SORT_ORDER, defaultValue = "desc") @NotNull SortOrder sortOrder) {
 
-        log.info("GET popular frameworks; sort metric [{}] and sort order [{}]", sortMetric, sortOrder);
+        log.info("GET popular repositories; sort metric [{}] and sort order [{}]", sortMetric, sortOrder);
         return codeRepositoryService.findBy(login, authorization, sortMetric, sortOrder);
     }
 
