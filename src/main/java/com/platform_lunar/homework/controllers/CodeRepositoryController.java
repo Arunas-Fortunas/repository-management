@@ -20,10 +20,10 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RestController
 @RequestMapping(path = "/repository-management", produces = APPLICATION_JSON_VALUE)
 public class CodeRepositoryController {
-    public static final String LOGIN = "login";
-    public static final String AUTHORIZATION = "authorization";
-    public static final String SORT_METRIC = "sort_metric";
-    public static final String SORT_ORDER = "sort_order";
+    static final String LOGIN = "login";
+    static final String AUTHORIZATION = "authorization";
+    static final String SORT_METRIC = "sort_metric";
+    static final String SORT_ORDER = "sort_order";
 
     private static final String OWNER = "owner";
     private static final String REPO = "repo";
@@ -36,7 +36,7 @@ public class CodeRepositoryController {
     }
 
     @GetMapping(path = "popular-repositories")
-    public List<CodeRepository> findPopularRepositories(
+    List<CodeRepository> findPopularRepositories(
             @RequestHeader(value = LOGIN, required = false) String login,
             @RequestHeader(value = AUTHORIZATION, required = false) String authorization,
             @RequestParam(value = SORT_METRIC, defaultValue = "stars") @NotNull SortMetric sortMetric,
@@ -47,7 +47,7 @@ public class CodeRepositoryController {
     }
 
     @PutMapping(path = "{owner}/{repo}/star")
-    public void starRepo(
+    void starRepo(
             @RequestHeader(LOGIN) @NotEmpty String login,
             @RequestHeader(AUTHORIZATION) @NotEmpty String authorization,
             @PathVariable(OWNER) @NotEmpty String repoOwner,
@@ -58,7 +58,7 @@ public class CodeRepositoryController {
     }
 
     @DeleteMapping(path = "{owner}/{repo}/unstar")
-    public void unstarRepo(
+    void unstarRepo(
             @RequestHeader(LOGIN) @NotEmpty String login,
             @RequestHeader(AUTHORIZATION) @NotEmpty String authorization,
             @PathVariable(OWNER) @NotEmpty String repoOwner,
