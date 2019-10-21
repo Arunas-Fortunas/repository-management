@@ -83,7 +83,7 @@
                         <include>**/*Test.java</include>
                     </includes>
                     <excludes>
-                        <exclude>**/integration/*.java</exclude>
+                        <exclude>%regex[.*ITest.*]</exclude>
                     </excludes>
                 </configuration>
                 <executions>
@@ -98,7 +98,7 @@
                                 <exclude>none</exclude>
                             </excludes>
                             <includes>
-                                <include>**/integration/*Test.java</include>
+                                <include>%regex[.*ITest.*]</include>
                             </includes>
                         </configuration>
                     </execution>
