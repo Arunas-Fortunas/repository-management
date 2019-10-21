@@ -2,10 +2,6 @@ package com.platform_lunar.homework.configurations;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.platform_lunar.homework.configurations.properties.RepositoryProperties;
-import com.platform_lunar.homework.configurations.properties.ServiceProperties;
-import com.platform_lunar.homework.configurations.properties.UserProperties;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
