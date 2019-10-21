@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Data
 @Configuration
-@ConfigurationProperties("repository")
-public class RepositoryProperties {
+@ConfigurationProperties("github")
+public class GithubProperties {
     private String baseUrl;
 }

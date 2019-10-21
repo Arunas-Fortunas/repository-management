@@ -2,7 +2,7 @@ package com.platform_lunar.homework.services;
 
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
-import com.platform_lunar.homework.configurations.properties.RepositoryProperties;
+import com.platform_lunar.homework.configurations.properties.GithubProperties;
 import com.platform_lunar.homework.controllers.exceptions.DataRetrievalException;
 import com.platform_lunar.homework.domain.PopularityMetric;
 import com.platform_lunar.homework.dtos.PopularRepositoryDto;
@@ -29,20 +29,20 @@ import static org.springframework.http.HttpMethod.*;
 
 @Component
 public class GithubGateway {
-    private final RepositoryProperties repoProperties;
+    private final GithubProperties githubProperties;
     private final RestTemplate restTemplate;
 
     private static final Logger log = LoggerFactory.getLogger(GithubGateway.class);
 
-    public GithubGateway(RepositoryProperties repoProperties, RestTemplate restTemplate) {
-        this.repoProperties = repoProperties;
+    public GithubGateway(GithubProperties githubProperties, RestTemplate restTemplate) {
+        this.githubProperties = githubProperties;
         this.restTemplate = restTemplate;
     }
 
     public Collection<PopularRepositoryDto> findPopularRepositories(String language, Integer items,
                                                                     PopularityMetric popularityMetric) {
 
-        var builder = UriComponentsBuilder.fromUriString(String.format("%s/search/repositories", repoProperties.getBaseUrl()))
+        var builder = UriComponentsBuilder.fromUriString(String.format("%s/search/repositories", githubProperties.getBaseUrl()))
                 .queryParam(QUERY, String.format("language:%s", language))
                 .queryParam(PAGE, 1)
                 .queryParam(PER_PAGE, items)
@@ -110,7 +110,7 @@ public class GithubGateway {
     private Boolean doIsStarredByUser(String login, String authorization, String repoOwner, String repoName) {
         log.debug("checking if starred [{}/{}] by {}", repoOwner, repoName, login);
 
-        var url = String.format("%s/user/starred/{owner}/{name}", repoProperties.getBaseUrl());
+        var url = String.format("%s/user/starred/{owner}/{name}", githubProperties.getBaseUrl());
         var builder = UriComponentsBuilder.fromUriString(url);
         var urlParams = Map.of(REPO_OWNER, repoOwner, REPO_NAME, repoName);
 
@@ -143,7 +143,7 @@ public class GithubGateway {
         // update the cache
         starredCache.put(String.format("%s/%s/%s", login, repoOwner, repoName), PUT == httpMethod);
 
-        var url = String.format("%s/user/starred/{owner}/{name}", repoProperties.getBaseUrl());
+        var url = String.format("%s/user/starred/{owner}/{name}", githubProperties.getBaseUrl());
         var builder = UriComponentsBuilder.fromUriString(url);
         var urlParams = Map.of(REPO_OWNER, repoOwner, REPO_NAME, repoName);
 

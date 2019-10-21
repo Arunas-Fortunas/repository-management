@@ -1,4 +1,4 @@
-repository:
+github:
   baseUrl: https://api.github.com
 
 service:
