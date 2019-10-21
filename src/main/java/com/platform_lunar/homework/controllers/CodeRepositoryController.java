@@ -4,6 +4,7 @@ import com.platform_lunar.homework.domain.CodeRepository;
 import com.platform_lunar.homework.domain.SortMetric;
 import com.platform_lunar.homework.domain.SortOrder;
 import com.platform_lunar.homework.services.CodeRepositoryService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -16,6 +17,7 @@ import java.util.List;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @Slf4j
+@RequiredArgsConstructor
 @Validated
 @RestController
 @RequestMapping(path = "/repository-management", produces = APPLICATION_JSON_VALUE)
@@ -28,12 +30,7 @@ public class CodeRepositoryController {
     private static final String OWNER = "owner";
     private static final String REPO = "repo";
 
-    private CodeRepositoryService codeRepositoryService;
-
-    @Autowired
-    public CodeRepositoryController(CodeRepositoryService codeRepositoryService) {
-        this.codeRepositoryService = codeRepositoryService;
-    }
+    private final CodeRepositoryService codeRepositoryService;
 
     @GetMapping(path = "popular-repositories")
     List<CodeRepository> findPopularRepositories(

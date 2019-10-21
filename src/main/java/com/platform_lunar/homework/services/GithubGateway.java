@@ -10,6 +10,7 @@ import com.platform_lunar.homework.utils.GithubPageCountResolver;
 import com.platform_lunar.homework.utils.HttpEntityCreator;
 import io.vavr.control.Try;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -27,15 +28,11 @@ import static java.util.stream.Collectors.toList;
 import static org.springframework.http.HttpMethod.*;
 
 @Slf4j
+@RequiredArgsConstructor
 @Component
 public class GithubGateway {
     private final GithubProperties githubProperties;
     private final RestTemplate restTemplate;
-
-    GithubGateway(GithubProperties githubProperties, RestTemplate restTemplate) {
-        this.githubProperties = githubProperties;
-        this.restTemplate = restTemplate;
-    }
 
     Collection<PopularRepositoryDto> findPopularRepositories(String language, Integer items, PopularityMetric popularityMetric) {
         var builder = UriComponentsBuilder.fromUriString(String.format("%s/search/repositories", githubProperties.getBaseUrl()))

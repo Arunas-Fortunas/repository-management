@@ -6,6 +6,7 @@ import com.platform_lunar.homework.domain.CodeRepository;
 import com.platform_lunar.homework.domain.SortMetric;
 import com.platform_lunar.homework.domain.SortOrder;
 import io.vavr.control.Try;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -19,15 +20,11 @@ import java.util.concurrent.TimeUnit;
 import static org.springframework.util.StringUtils.hasText;
 
 @Slf4j
+@RequiredArgsConstructor
 @Component
 public class CodeRepositoryService {
     private final GithubGateway githubGateway;
     private final CodeRepositoryServiceProperties codeRepositoryServiceProperties;
-
-    CodeRepositoryService(GithubGateway githubGateway, CodeRepositoryServiceProperties codeRepositoryServiceProperties) {
-        this.githubGateway = githubGateway;
-        this.codeRepositoryServiceProperties = codeRepositoryServiceProperties;
-    }
 
     public List<CodeRepository> findBy(String login, String authorization, SortMetric sortMetric, SortOrder sortOrder) {
         var popularRepos = githubGateway.findPopularRepositories(
