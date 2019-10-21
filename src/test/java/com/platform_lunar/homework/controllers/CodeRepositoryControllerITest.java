@@ -1,4 +1,4 @@
-package integration;
+package com.platform_lunar.homework.controllers;
 
 import com.platform_lunar.homework.Application;
 import com.platform_lunar.homework.configurations.properties.CodeRepositoryServiceProperties;
@@ -23,15 +23,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = Application.class)
 @AutoConfigureMockMvc
-public class CodeRepositoryControllerITest {
+class CodeRepositoryControllerITest {
     private MockMvc mvc;
     private GithubGateway githubGateway;
     private CredentialsProperties credentialsProperties;
     private CodeRepositoryServiceProperties codeRepositoryServiceProperties;
 
     @Autowired
-    public CodeRepositoryControllerITest(MockMvc mvc, GithubGateway githubGateway, CredentialsProperties credentialsProperties,
-                                         CodeRepositoryServiceProperties codeRepositoryServiceProperties) {
+    CodeRepositoryControllerITest(MockMvc mvc, GithubGateway githubGateway, CredentialsProperties credentialsProperties,
+                                  CodeRepositoryServiceProperties codeRepositoryServiceProperties) {
         this.mvc = mvc;
         this.githubGateway = githubGateway;
         this.credentialsProperties = credentialsProperties;
@@ -115,7 +115,7 @@ public class CodeRepositoryControllerITest {
                 .andExpect(status().is5xxServerError());
     }
 
-    // utils
+    // com.platform_lunar.homework.utils
     private String authorization;
     private String getAuthorization() {
         if (authorization == null) {

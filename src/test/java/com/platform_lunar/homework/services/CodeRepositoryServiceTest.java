@@ -1,10 +1,8 @@
-package services;
+package com.platform_lunar.homework.services;
 
 import com.platform_lunar.homework.configurations.properties.CodeRepositoryServiceProperties;
 import com.platform_lunar.homework.domain.SortMetric;
 import com.platform_lunar.homework.dtos.PopularRepositoryDto;
-import com.platform_lunar.homework.services.GithubGateway;
-import com.platform_lunar.homework.services.CodeRepositoryService;
 import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,7 +17,7 @@ import static com.platform_lunar.homework.domain.SortMetric.CONTRIBUTORS;
 import static com.platform_lunar.homework.domain.SortOrder.ASC;
 import static com.platform_lunar.homework.domain.SortOrder.DESC;
 
-public class CodeCodeRepositoryServiceTest {
+class CodeRepositoryServiceTest {
     private GithubGateway githubGateway = Mockito.mock(GithubGateway.class);
     private CodeRepositoryServiceProperties codeRepositoryServiceProperties = new CodeRepositoryServiceProperties();
     private List<PopularRepositoryDto> popularRepos = createPopularRepositories(codeRepositoryServiceProperties.getLanguage());

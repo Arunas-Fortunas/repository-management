@@ -1,9 +1,8 @@
-package integration;
+package com.platform_lunar.homework.services;
 
 import com.platform_lunar.homework.Application;
 import com.platform_lunar.homework.configurations.properties.CodeRepositoryServiceProperties;
 import com.platform_lunar.homework.configurations.properties.CredentialsProperties;
-import com.platform_lunar.homework.services.GithubGateway;
 import com.platform_lunar.homework.utils.AuthorizationUtils;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
