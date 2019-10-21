@@ -1,7 +1,7 @@
 package integration;
 
 import com.platform_lunar.homework.Application;
-import com.platform_lunar.homework.configurations.properties.ServiceProperties;
+import com.platform_lunar.homework.configurations.properties.CodeRepositoryServiceProperties;
 import com.platform_lunar.homework.configurations.properties.CredentialsProperties;
 import com.platform_lunar.homework.services.GithubGateway;
 import com.platform_lunar.homework.utils.AuthorizationUtils;
@@ -27,15 +27,15 @@ public class CodeRepositoryControllerITest {
     private MockMvc mvc;
     private GithubGateway githubGateway;
     private CredentialsProperties credentialsProperties;
-    private ServiceProperties serviceProperties;
+    private CodeRepositoryServiceProperties codeRepositoryServiceProperties;
 
     @Autowired
     public CodeRepositoryControllerITest(MockMvc mvc, GithubGateway githubGateway, CredentialsProperties credentialsProperties,
-                                         ServiceProperties serviceProperties) {
+                                         CodeRepositoryServiceProperties codeRepositoryServiceProperties) {
         this.mvc = mvc;
         this.githubGateway = githubGateway;
         this.credentialsProperties = credentialsProperties;
-        this.serviceProperties = serviceProperties;
+        this.codeRepositoryServiceProperties = codeRepositoryServiceProperties;
     }
 
     // I assume RxJava will stay popular repo for a while ;)
@@ -71,7 +71,7 @@ public class CodeRepositoryControllerITest {
                 .header(AUTHORIZATION, getAuthorization()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isArray())
-                .andExpect(jsonPath("$", hasSize(serviceProperties.getItems())))
+                .andExpect(jsonPath("$", hasSize(codeRepositoryServiceProperties.getItems())))
                 .andExpect(jsonPath("$[*].name").exists())
                 .andExpect(jsonPath("$[*].description").exists())
                 .andExpect(jsonPath("$[*].linkToRepo").exists())
@@ -85,7 +85,7 @@ public class CodeRepositoryControllerITest {
         mvc.perform(get("/repository-management/popular-repositories"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isArray())
-                .andExpect(jsonPath("$", hasSize(serviceProperties.getItems())))
+                .andExpect(jsonPath("$", hasSize(codeRepositoryServiceProperties.getItems())))
                 .andExpect(jsonPath("$[*].name").exists())
                 .andExpect(jsonPath("$[*].description").exists())
                 .andExpect(jsonPath("$[*].linkToRepo").exists())

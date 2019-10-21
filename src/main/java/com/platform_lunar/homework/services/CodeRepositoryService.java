@@ -1,6 +1,6 @@
 package com.platform_lunar.homework.services;
 
-import com.platform_lunar.homework.configurations.properties.ServiceProperties;
+import com.platform_lunar.homework.configurations.properties.CodeRepositoryServiceProperties;
 import com.platform_lunar.homework.controllers.exceptions.DataRetrievalException;
 import com.platform_lunar.homework.domain.CodeRepository;
 import com.platform_lunar.homework.domain.SortMetric;
@@ -22,23 +22,23 @@ import static org.springframework.util.StringUtils.hasText;
 @Component
 public class CodeRepositoryService {
     private final GithubGateway githubGateway;
-    private final ServiceProperties serviceProperties;
+    private final CodeRepositoryServiceProperties codeRepositoryServiceProperties;
 
-    public CodeRepositoryService(GithubGateway githubGateway, ServiceProperties serviceProperties) {
+    public CodeRepositoryService(GithubGateway githubGateway, CodeRepositoryServiceProperties codeRepositoryServiceProperties) {
         this.githubGateway = githubGateway;
-        this.serviceProperties = serviceProperties;
+        this.codeRepositoryServiceProperties = codeRepositoryServiceProperties;
     }
 
     public List<CodeRepository> findBy(String login, String authorization, SortMetric sortMetric, SortOrder sortOrder) {
         var popularRepos = githubGateway.findPopularRepositories(
-                serviceProperties.getLanguage(),
-                serviceProperties.getItems(),
-                serviceProperties.getPopularityMetric());
+                codeRepositoryServiceProperties.getLanguage(),
+                codeRepositoryServiceProperties.getItems(),
+                codeRepositoryServiceProperties.getPopularityMetric());
 
-        var synchronizedCodeRepoList = Collections.synchronizedList(new ArrayList<CodeRepository>(serviceProperties.getItems()));
-        var latch = new CountDownLatch(serviceProperties.getItems());
+        var synchronizedCodeRepoList = Collections.synchronizedList(new ArrayList<CodeRepository>(codeRepositoryServiceProperties.getItems()));
+        var latch = new CountDownLatch(codeRepositoryServiceProperties.getItems());
 
-        var executorService = Executors.newFixedThreadPool(serviceProperties.getItems());
+        var executorService = Executors.newFixedThreadPool(codeRepositoryServiceProperties.getItems());
 
         for (var popularRepo : popularRepos) {
             executorService.execute(() -> {

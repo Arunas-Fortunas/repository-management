@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Configuration;
 @Data
 @Configuration
 @ConfigurationProperties("service")
-public class ServiceProperties {
+public class CodeRepositoryServiceProperties {
     private String language;
     private Integer items;
     private PopularityMetric popularityMetric;

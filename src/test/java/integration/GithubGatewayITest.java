@@ -1,7 +1,7 @@
 package integration;
 
 import com.platform_lunar.homework.Application;
-import com.platform_lunar.homework.configurations.properties.ServiceProperties;
+import com.platform_lunar.homework.configurations.properties.CodeRepositoryServiceProperties;
 import com.platform_lunar.homework.configurations.properties.CredentialsProperties;
 import com.platform_lunar.homework.services.GithubGateway;
 import com.platform_lunar.homework.utils.AuthorizationUtils;
@@ -16,14 +16,14 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @SpringBootTest(classes = Application.class)
 class GithubGatewayITest {
     private GithubGateway githubGateway;
-    private ServiceProperties serviceProperties;
+    private CodeRepositoryServiceProperties codeRepositoryServiceProperties;
     private String login;
     private String authorization;
 
     @Autowired
-    GithubGatewayITest(GithubGateway githubGateway, CredentialsProperties credentialsProperties, ServiceProperties serviceProperties) {
+    GithubGatewayITest(GithubGateway githubGateway, CredentialsProperties credentialsProperties, CodeRepositoryServiceProperties codeRepositoryServiceProperties) {
         this.githubGateway = githubGateway;
-        this.serviceProperties = serviceProperties;
+        this.codeRepositoryServiceProperties = codeRepositoryServiceProperties;
         this.login = credentialsProperties.getLogin();
         this.authorization = AuthorizationUtils.createEncodedAuthorization(login, credentialsProperties.getPassword());
     }
@@ -31,14 +31,14 @@ class GithubGatewayITest {
     @Test
     void findPopularRepositories() {
         var popularRepos = this.githubGateway.findPopularRepositories(
-                serviceProperties.getLanguage(),
-                serviceProperties.getItems(),
-                serviceProperties.getPopularityMetric());
+                codeRepositoryServiceProperties.getLanguage(),
+                codeRepositoryServiceProperties.getItems(),
+                codeRepositoryServiceProperties.getPopularityMetric());
 
-        Assert.assertEquals(serviceProperties.getItems().intValue(), popularRepos.size());
+        Assert.assertEquals(codeRepositoryServiceProperties.getItems().intValue(), popularRepos.size());
 
         popularRepos.forEach(popularRepo ->
-                Assert.assertEquals(serviceProperties.getLanguage(), popularRepo.getLanguage()));
+                Assert.assertEquals(codeRepositoryServiceProperties.getLanguage(), popularRepo.getLanguage()));
     }
 
     @Test

@@ -1,6 +1,6 @@
 package services;
 
-import com.platform_lunar.homework.configurations.properties.ServiceProperties;
+import com.platform_lunar.homework.configurations.properties.CodeRepositoryServiceProperties;
 import com.platform_lunar.homework.domain.SortMetric;
 import com.platform_lunar.homework.dtos.PopularRepositoryDto;
 import com.platform_lunar.homework.services.GithubGateway;
@@ -21,20 +21,20 @@ import static com.platform_lunar.homework.domain.SortOrder.DESC;
 
 public class CodeCodeRepositoryServiceTest {
     private GithubGateway githubGateway = Mockito.mock(GithubGateway.class);
-    private ServiceProperties serviceProperties = new ServiceProperties();
-    private List<PopularRepositoryDto> popularRepos = createPopularRepositories(serviceProperties.getLanguage());
+    private CodeRepositoryServiceProperties codeRepositoryServiceProperties = new CodeRepositoryServiceProperties();
+    private List<PopularRepositoryDto> popularRepos = createPopularRepositories(codeRepositoryServiceProperties.getLanguage());
 
     @BeforeEach
     void init() {
-        serviceProperties.setItems(10);
-        serviceProperties.setLanguage("java");
-        serviceProperties.setPopularityMetric(STARS);
+        codeRepositoryServiceProperties.setItems(10);
+        codeRepositoryServiceProperties.setLanguage("java");
+        codeRepositoryServiceProperties.setPopularityMetric(STARS);
 
         Mockito.when(
                 githubGateway.findPopularRepositories(
-                        serviceProperties.getLanguage(),
-                        serviceProperties.getItems(),
-                        serviceProperties.getPopularityMetric()))
+                        codeRepositoryServiceProperties.getLanguage(),
+                        codeRepositoryServiceProperties.getItems(),
+                        codeRepositoryServiceProperties.getPopularityMetric()))
                 .thenReturn(popularRepos);
 
         IntStream.rangeClosed(0, 9).forEach(
@@ -52,7 +52,7 @@ public class CodeCodeRepositoryServiceTest {
 
     @Test
     void findBy_ContributorsDesc() {
-        var repositoryService = new CodeRepositoryService(githubGateway, serviceProperties);
+        var repositoryService = new CodeRepositoryService(githubGateway, codeRepositoryServiceProperties);
         var repositories = repositoryService.findBy("login", "authorization", CONTRIBUTORS, DESC);
 
         IntStream.rangeClosed(0, 8).forEach(i -> {
@@ -64,7 +64,7 @@ public class CodeCodeRepositoryServiceTest {
 
     @Test
     void findBy_StarsAsc() {
-        var repositoryService = new CodeRepositoryService(githubGateway, serviceProperties);
+        var repositoryService = new CodeRepositoryService(githubGateway, codeRepositoryServiceProperties);
         var repositories = repositoryService.findBy("login", "authorization", SortMetric.STARS, ASC);
 
         IntStream.rangeClosed(0, 8).forEach(i -> {
