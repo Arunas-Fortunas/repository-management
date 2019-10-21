@@ -32,14 +32,12 @@ public class GithubGateway {
     private final GithubProperties githubProperties;
     private final RestTemplate restTemplate;
 
-    public GithubGateway(GithubProperties githubProperties, RestTemplate restTemplate) {
+    GithubGateway(GithubProperties githubProperties, RestTemplate restTemplate) {
         this.githubProperties = githubProperties;
         this.restTemplate = restTemplate;
     }
 
-    public Collection<PopularRepositoryDto> findPopularRepositories(String language, Integer items,
-                                                                    PopularityMetric popularityMetric) {
-
+    Collection<PopularRepositoryDto> findPopularRepositories(String language, Integer items, PopularityMetric popularityMetric) {
         var builder = UriComponentsBuilder.fromUriString(String.format("%s/search/repositories", githubProperties.getBaseUrl()))
                 .queryParam(QUERY, String.format("language:%s", language))
                 .queryParam(PAGE, 1)
@@ -73,7 +71,7 @@ public class GithubGateway {
             .maximumSize(CACHE_SIZE)
             .build();
 
-    public Integer getContributorsCount(String url) {
+    Integer getContributorsCount(String url) {
         return contributorsCache.get(url, this::doGetContributorsCount);
     }
 
@@ -127,11 +125,11 @@ public class GithubGateway {
                 .getOrElse(false);
     }
 
-    public void starRepo(String login, String authorization, String repoOwner, String repoName) {
+    void starRepo(String login, String authorization, String repoOwner, String repoName) {
         doStarOrUnstarOperation(PUT, login, authorization, repoOwner, repoName);
     }
 
-    public void unstarRepo(String login, String authorization, String repoOwner, String repoName) {
+    void unstarRepo(String login, String authorization, String repoOwner, String repoName) {
         doStarOrUnstarOperation(DELETE, login, authorization, repoOwner, repoName);
     }
 

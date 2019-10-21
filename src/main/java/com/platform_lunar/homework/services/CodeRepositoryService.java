@@ -24,7 +24,7 @@ public class CodeRepositoryService {
     private final GithubGateway githubGateway;
     private final CodeRepositoryServiceProperties codeRepositoryServiceProperties;
 
-    public CodeRepositoryService(GithubGateway githubGateway, CodeRepositoryServiceProperties codeRepositoryServiceProperties) {
+    CodeRepositoryService(GithubGateway githubGateway, CodeRepositoryServiceProperties codeRepositoryServiceProperties) {
         this.githubGateway = githubGateway;
         this.codeRepositoryServiceProperties = codeRepositoryServiceProperties;
     }
