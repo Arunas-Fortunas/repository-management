@@ -6,8 +6,8 @@ import org.springframework.context.annotation.Configuration;
 
 @Data
 @Configuration
-@ConfigurationProperties("user")
-public class UserProperties {
+@ConfigurationProperties("credentials")
+public class CredentialsProperties {
     private String login;
     private String password;
 }

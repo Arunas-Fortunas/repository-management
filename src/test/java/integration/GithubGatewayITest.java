@@ -2,7 +2,7 @@ package integration;
 
 import com.platform_lunar.homework.Application;
 import com.platform_lunar.homework.configurations.properties.ServiceProperties;
-import com.platform_lunar.homework.configurations.properties.UserProperties;
+import com.platform_lunar.homework.configurations.properties.CredentialsProperties;
 import com.platform_lunar.homework.services.GithubGateway;
 import com.platform_lunar.homework.utils.AuthorizationUtils;
 import org.junit.Assert;
@@ -21,11 +21,11 @@ class GithubGatewayITest {
     private String authorization;
 
     @Autowired
-    GithubGatewayITest(GithubGateway githubGateway, UserProperties userProperties, ServiceProperties serviceProperties) {
+    GithubGatewayITest(GithubGateway githubGateway, CredentialsProperties credentialsProperties, ServiceProperties serviceProperties) {
         this.githubGateway = githubGateway;
         this.serviceProperties = serviceProperties;
-        this.login = userProperties.getLogin();
-        this.authorization = AuthorizationUtils.createEncodedAuthorization(login, userProperties.getPassword());
+        this.login = credentialsProperties.getLogin();
+        this.authorization = AuthorizationUtils.createEncodedAuthorization(login, credentialsProperties.getPassword());
     }
 
     @Test

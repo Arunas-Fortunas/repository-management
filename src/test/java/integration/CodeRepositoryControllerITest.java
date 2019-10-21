@@ -2,9 +2,7 @@ package integration;
 
 import com.platform_lunar.homework.Application;
 import com.platform_lunar.homework.configurations.properties.ServiceProperties;
-import com.platform_lunar.homework.configurations.properties.UserProperties;
-import com.platform_lunar.homework.domain.SortMetric;
-import com.platform_lunar.homework.domain.SortOrder;
+import com.platform_lunar.homework.configurations.properties.CredentialsProperties;
 import com.platform_lunar.homework.services.GithubGateway;
 import com.platform_lunar.homework.utils.AuthorizationUtils;
 import org.junit.Assert;
@@ -28,15 +26,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class CodeRepositoryControllerITest {
     private MockMvc mvc;
     private GithubGateway githubGateway;
-    private UserProperties userProperties;
+    private CredentialsProperties credentialsProperties;
     private ServiceProperties serviceProperties;
 
     @Autowired
-    public CodeRepositoryControllerITest(MockMvc mvc, GithubGateway githubGateway, UserProperties userProperties,
+    public CodeRepositoryControllerITest(MockMvc mvc, GithubGateway githubGateway, CredentialsProperties credentialsProperties,
                                          ServiceProperties serviceProperties) {
         this.mvc = mvc;
         this.githubGateway = githubGateway;
-        this.userProperties = userProperties;
+        this.credentialsProperties = credentialsProperties;
         this.serviceProperties = serviceProperties;
     }
 
@@ -47,29 +45,29 @@ public class CodeRepositoryControllerITest {
     @Test
     void unstarRepo() throws Exception {
         mvc.perform(delete("/repository-management/{owner}/{repo}/unstar", REPO_OWNER, REPO_NAME)
-                    .header(LOGIN, userProperties.getLogin())
+                    .header(LOGIN, credentialsProperties.getLogin())
                     .header(AUTHORIZATION, getAuthorization()))
                 .andExpect(status().isOk());
 
         Assert.assertFalse(
-                githubGateway.isStarredByUser(userProperties.getLogin(), getAuthorization(), REPO_OWNER, REPO_NAME));
+                githubGateway.isStarredByUser(credentialsProperties.getLogin(), getAuthorization(), REPO_OWNER, REPO_NAME));
     }
 
     @Test
     void starRepo() throws Exception {
         mvc.perform(put("/repository-management/{owner}/{repo}/star", REPO_OWNER, REPO_NAME)
-                    .header(LOGIN, userProperties.getLogin())
+                    .header(LOGIN, credentialsProperties.getLogin())
                     .header(AUTHORIZATION, getAuthorization()))
                 .andExpect(status().isOk());
 
         Assert.assertTrue(
-                githubGateway.isStarredByUser(userProperties.getLogin(), getAuthorization(), REPO_OWNER, REPO_NAME));
+                githubGateway.isStarredByUser(credentialsProperties.getLogin(), getAuthorization(), REPO_OWNER, REPO_NAME));
     }
 
     @Test
     void findPopularRepositories_WithAuthorization() throws Exception {
         mvc.perform(get("/repository-management/popular-repositories")
-                .header(LOGIN, userProperties.getLogin())
+                .header(LOGIN, credentialsProperties.getLogin())
                 .header(AUTHORIZATION, getAuthorization()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isArray())
@@ -105,12 +103,12 @@ public class CodeRepositoryControllerITest {
                 .andExpect(status().is4xxClientError());
 
         mvc.perform(delete("/repository-management/{owner}/{repo}/unstar", "<unknown>", "<unknown>")
-                .header(LOGIN, userProperties.getLogin())
+                .header(LOGIN, credentialsProperties.getLogin())
                 .header(AUTHORIZATION, getAuthorization()))
                 .andExpect(status().is5xxServerError());
 
         mvc.perform(get("/repository-management/popular-repositories")
-                .header(LOGIN, userProperties.getLogin())
+                .header(LOGIN, credentialsProperties.getLogin())
                 .header(AUTHORIZATION, getAuthorization())
                 .param(SORT_METRIC, "<unknown>")
                 .param(SORT_ORDER, "<unknown>"))
@@ -122,8 +120,8 @@ public class CodeRepositoryControllerITest {
     private String getAuthorization() {
         if (authorization == null) {
             authorization = AuthorizationUtils.createEncodedAuthorization(
-                    userProperties.getLogin(),
-                    userProperties.getPassword());
+                    credentialsProperties.getLogin(),
+                    credentialsProperties.getPassword());
         }
         return authorization;
     }

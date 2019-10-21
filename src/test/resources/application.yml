@@ -6,6 +6,6 @@ service:
   items: 2
   popularityMetric: stars
 
-user:
+credentials:
   login: plhomework555@gmail.com
   password: expsoon-555
